@@ -1,0 +1,32 @@
+{
+  "name": "proxy",
+  "version": "1.0.0",
+  "description": "动态代理爬虫",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/walfud/proxy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/walfud/proxy/issues"
+  },
+  "homepage": "https://github.com/walfud/proxy#readme",
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "koa": "^2.5.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.4.0",
+    "mongodb": "^3.0.8",
+    "node-fetch": "^2.1.2",
+    "puppeteer": "^1.4.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  }
+}
