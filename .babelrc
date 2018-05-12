@@ -1,6 +1,19 @@
 {
-    "presets": ["env"],
-    "plugins": ["syntax-dynamic-import"],    
+    "presets": [
+        [
+            "env",
+            {
+                "targets": {
+                    "node": "8.11.1"
+                },
+                "exclude": [
+                ]
+            }
+        ]
+    ],
+    "plugins": [
+        "syntax-dynamic-import"
+    ],
     "sourceMaps": true,
     "retainLines": true
 }
