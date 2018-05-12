@@ -1,6 +1,8 @@
 import Router from 'koa-router'
 
 const router = new Router()
-router.get('/json', ctx => {
+router.get('/', ctx => {
     ctx.body = JSON.stringify(ctx)
 })
+
+export default router

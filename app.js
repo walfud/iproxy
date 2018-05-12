@@ -8,8 +8,11 @@ app.use(logger())
 app.use(bodyParser())
 
 const root = new Router()
-root.use('/json', require('./router/json').routes())
-app.use(root)
+root.get('/', ctx => {
+    ctx.body = 'Hello World'
+})
+root.use('/json', require('./router/json').default.routes())
+app.use(root.routes())
 
 app.listen(3000)
 console.log(`Listen at 3000`)
