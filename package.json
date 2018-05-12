@@ -1,7 +1,7 @@
 {
-  "name": "proxy",
+  "name": "iproxy",
   "version": "1.0.0",
-  "description": "动态代理爬虫",
+  "description": "IP 代理",
   "main": "index.js",
   "scripts": {
     "debug": "babel-node app.js",
