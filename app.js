@@ -6,14 +6,27 @@ import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 
 // Sniffer Service
-(function () {
+setInterval(function () {
+    // TODO: mongodb
+    const proxies = []
+    function saver(proxy) {
+        if (!Array.isArray(proxy)) {
+            proxy = [proxy]
+        }
+
+        for (let i of proxy) {
+            if (i && i.replace(/[^.]/g, '').length === 3 && i.replace(/[^:]/g, '').length === 1) {
+                proxies.push(i)
+            }
+        } 
+    }
     for (let file of fs.readdirSync('./sniffer')) {
         console.log(`loading sniffer: ${file}`)
 
         const { name } = path.parse(file)
-        require(`./sniffer/${name}`).default()
+        require(`./sniffer/${name}`).default(saver)
     }
-})();
+}, 1 * 1000);
 
 // Server
 (function () {

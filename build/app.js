@@ -6,14 +6,27 @@ var _koaBodyparser = require('koa-bodyparser');var _koaBodyparser2 = _interopReq
 var _koaRouter = require('koa-router');var _koaRouter2 = _interopRequireDefault(_koaRouter);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 // Sniffer Service
-(function () {
+setInterval(function () {
+    // TODO: mongodb
+    const proxies = [];
+    function saver(proxy) {
+        if (!Array.isArray(proxy)) {
+            proxy = [proxy];
+        }
+
+        for (let i of proxy) {
+            if (i && i.replace(/[^.]/g, '').length === 3 && i.replace(/[^:]/g, '').length === 1) {
+                proxies.push(i);
+            }
+        }
+    }
     for (let file of _fs2.default.readdirSync('./sniffer')) {
         console.log(`loading sniffer: ${file}`);
 
         const { name } = _path2.default.parse(file);
-        require(`./sniffer/${name}`).default();
+        require(`./sniffer/${name}`).default(saver);
     }
-})();
+}, 1 * 1000);
 
 // Server
 (function () {
