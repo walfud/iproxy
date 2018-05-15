@@ -5,6 +5,8 @@ var _koaLogger = require('koa-logger');var _koaLogger2 = _interopRequireDefault(
 var _koaBodyparser = require('koa-bodyparser');var _koaBodyparser2 = _interopRequireDefault(_koaBodyparser);
 var _koaRouter = require('koa-router');var _koaRouter2 = _interopRequireDefault(_koaRouter);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
+require(`./sniffer/zdaye`).default(proxy => console.log(proxy));
+
 // Sniffer Service
 setInterval(function () {
     // TODO: mongodb
@@ -17,6 +19,7 @@ setInterval(function () {
         for (let i of proxy) {
             if (i && i.replace(/[^.]/g, '').length === 3 && i.replace(/[^:]/g, '').length === 1) {
                 proxies.push(i);
+                console.log(`proxy added: ${i}`);
             }
         }
     }
@@ -24,31 +27,33 @@ setInterval(function () {
         console.log(`loading sniffer: ${file}`);
 
         const { name } = _path2.default.parse(file);
-        require(`./sniffer/${name}`).default(saver);
+        try {
+            require(`./sniffer/${name}`).default(saver);
+        } catch (err) {
+            console.log(err);
+        }
     }
-}, 1 * 1000);
+}, 60 * 60 * 1000);
 
 // Server
-(function () {
-    const app = new _koa2.default();
-    app.use((0, _koaLogger2.default)());
-    app.use((0, _koaBodyparser2.default)());
+const app = new _koa2.default();
+app.use((0, _koaLogger2.default)());
+app.use((0, _koaBodyparser2.default)());
 
-    const root = new _koaRouter2.default();
-    root.get('/', ctx => {
-        ctx.body = 'Hello World';
-    });
+const root = new _koaRouter2.default();
+root.get('/', ctx => {
+    ctx.body = 'Hello World';
+});
 
-    // Load all routers
-    for (let file of _fs2.default.readdirSync('./router')) {
-        console.log(`loading module: ${file}`);
+// Load all routers
+for (let file of _fs2.default.readdirSync('./router')) {
+    console.log(`loading module: ${file}`);
 
-        const { name } = _path2.default.parse(file);
-        root.use(`/${name}`, require(`./router/${name}`).default.routes());
-    }
-    app.use(root.routes());
+    const { name } = _path2.default.parse(file);
+    root.use(`/${name}`, require(`./router/${name}`).default.routes());
+}
+app.use(root.routes());
 
-    app.listen(3000);
-    console.log(`Listen at 3000`);
-})();
+app.listen(3000);
+console.log(`Listen at 3000`);
 //# sourceMappingURL=app.js.map
