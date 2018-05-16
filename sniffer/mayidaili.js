@@ -1,19 +1,12 @@
 /**
- * 站大爷
- * 支持 https
- * 支持 post响应时间 < 1s
- * 
- * http://ip.zdaye.com/FreeIPlist.html?ip=&adr=&checktime=&sleep=1&cunhuo=&nadr=&dengji=&https=1&yys=&post=%D6%A7%B3%D6&px=
+ * 蚂蚁代理
+ * http://www.mayidaili.com/share/
  */
 
 import puppeteer from 'puppeteer'
 import fetch from 'node-fetch'
 
 export default async function (saver) {
-    ////////////////////////////
-    return
-    ////////////////////////////
-
     const browser = await puppeteer.launch({
         headless: false,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
@@ -21,20 +14,9 @@ export default async function (saver) {
     const page = await browser.newPage()
     await page.goto('http://ip.zdaye.com/FreeIPlist.html?ip=&adr=&checktime=&sleep=1&cunhuo=&nadr=&dengji=&https=1&yys=&post=%D6%A7%B3%D6&px=')
 
-    await page.waitForSelector('#ipc')
-    const ipPortUrls = await page.$eval('#ipc', async () => {
-        const ipPortUrls = []
-        const trs = document.querySelectorAll('#ipc > tbody tr:not(.active)')
-        for (let i = 0; i < trs.length; i++) {
-            const tr = trs[i]
-            const ip = tr.querySelector('td:first-child').innerText
-            const portUrl = tr.querySelector('td:nth-child(3) > img').src
-            ipPortUrls.push({
-                ip,
-                portUrl,
-            })
-        }
-        return ipPortUrls
+    await page.waitForSelector('.bs-callout.bs-callout-info:nth-child(1) a')
+    const ipPortUrls = await page.$eval('.bs-callout.bs-callout-info:nth-child(1) a', async a => {
+
     })
     const cookies = await page.cookies()
     for (let ipPortUrl of ipPortUrls) {        

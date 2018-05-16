@@ -1,3 +1,8 @@
+/**
+ * 某网友整理好的代理池
+ * https://github.com/jhao104/proxy_pool
+ */
+
 import puppeteer from 'puppeteer'
 import fetch from 'node-fetch'
 
