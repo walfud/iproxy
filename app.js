@@ -31,7 +31,7 @@ setInterval(function () {
             console.log(err)
         }
     }
-}, 60 * 60 * 1000);
+}, 10 * 60 * 1000);
 
 // Server
 const app = new Koa()
