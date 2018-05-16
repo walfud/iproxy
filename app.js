@@ -5,7 +5,7 @@ import logger from 'koa-logger'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 
-require('./sniffer/kuaidaili').default(x => console.log(x))
+require('./sniffer/66ip').default(x => console.log(x))
 
 // Sniffer Service
 setInterval(function () {

@@ -5,7 +5,7 @@ var _koaLogger = require('koa-logger');var _koaLogger2 = _interopRequireDefault(
 var _koaBodyparser = require('koa-bodyparser');var _koaBodyparser2 = _interopRequireDefault(_koaBodyparser);
 var _koaRouter = require('koa-router');var _koaRouter2 = _interopRequireDefault(_koaRouter);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
-require('./sniffer/kuaidaili').default(x => console.log(x));
+require('./sniffer/66ip').default(x => console.log(x));
 
 // Sniffer Service
 setInterval(function () {
