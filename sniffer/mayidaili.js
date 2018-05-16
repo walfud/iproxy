@@ -11,32 +11,21 @@ export default async function (saver) {
         headless: false,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
+
+    // Goto share
     const page = await browser.newPage()
-    await page.goto('http://ip.zdaye.com/FreeIPlist.html?ip=&adr=&checktime=&sleep=1&cunhuo=&nadr=&dengji=&https=1&yys=&post=%D6%A7%B3%D6&px=')
+    await page.goto('http://www.mayidaili.com/share/')
+    await page.waitForSelector('.bs-callout.bs-callout-info:nth-child(1)')
+    const url = await page.$eval('.bs-callout.bs-callout-info:nth-child(1) a', x => x.href)
 
-    await page.waitForSelector('.bs-callout.bs-callout-info:nth-child(1) a')
-    const ipPortUrls = await page.$eval('.bs-callout.bs-callout-info:nth-child(1) a', async a => {
-
-    })
-    const cookies = await page.cookies()
-    for (let ipPortUrl of ipPortUrls) {        
-        const portPicBuffer = await fetch(ipPortUrl.portUrl, {
-            follow: 200,
-            headers: {
-                Host: 'ip.zdaye.com',
-                Accept: 'image/webp,image/apng,image/*,*/*;q=0.8',
-                'Accept-Encoding': 'gzip, deflate',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3419.0 Safari/537.36',
-                'Accept-Language': 'zh-CN,zh;q=0.9',
-                Referer: 'http://ip.zdaye.com/FreeIPlist.html?ip=&adr=&checktime=&sleep=3&cunhuo=&nadr=&dengji=&https=1&yys=&post=%D6%A7%B3%D6&px=',
-                Cookie: cookies.map(x => `${x.name}=${x.value}`).join(';'),
-            }
-        })
-        .then(res => res.buffer())
-        // TODO: verification code recognition
-
-        saver(`${ipPortUrl.ip}:???`)
-    }
+    // Goto detail
+    await page.goto(url)
+    await page.waitForSelector('body > div:nth-child(4) > p')
+    const proxyStr = await page.$eval('body > div:nth-child(4) > p', x => x.innerText)
+    proxyStr.split("\n")
+        .filter(x => !!x)
+        .map(x => x.replace(/#.*$/, ''))
+        .forEach(x => saver(x))
 
     await browser.close()
 }

@@ -7,12 +7,15 @@
 
 
 var _puppeteer = require('puppeteer');var _puppeteer2 = _interopRequireDefault(_puppeteer);
-var _nodeFetch = require('node-fetch');var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
-var _constants = require('constants');function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}exports.default =
-
-async function (saver) {
-    const browser = await _puppeteer2.default.launch({
-        headless: false,
+var _nodeFetch = require('node-fetch');var _nodeFetch2 = _interopRequireDefault(_nodeFetch);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /**
+                                                                                                                                                                                           * 站大爷
+                                                                                                                                                                                           * 支持 https
+                                                                                                                                                                                           * 支持 post响应时间 < 1s
+                                                                                                                                                                                           * 
+                                                                                                                                                                                           * http://ip.zdaye.com/FreeIPlist.html?ip=&adr=&checktime=&sleep=1&cunhuo=&nadr=&dengji=&https=1&yys=&post=%D6%A7%B3%D6&px=
+                                                                                                                                                                                           */exports.default = async function (saver) {////////////////////////////
+    return; ////////////////////////////
+    const browser = await _puppeteer2.default.launch({ headless: false,
         args: ['--no-sandbox', '--disable-setuid-sandbox'] });
 
     const page = await browser.newPage();
@@ -54,11 +57,5 @@ async function (saver) {
     }
 
     await browser.close();
-}; /**
-    * 站大爷
-    * 支持 https
-    * 支持 post响应时间 < 1s
-    * 
-    * http://ip.zdaye.com/FreeIPlist.html?ip=&adr=&checktime=&sleep=1&cunhuo=&nadr=&dengji=&https=1&yys=&post=%D6%A7%B3%D6&px=
-    */
+};
 //# sourceMappingURL=zdaye.js.map
