@@ -1,24 +1,15 @@
-'use strict';Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';Object.defineProperty(exports, "__esModule", { value: true }); /**
+                                                                             * 站大爷
+                                                                             * 支持 https
+                                                                             * 支持 post响应时间 < 1s
+                                                                             * 
+                                                                             * http://ip.zdaye.com/FreeIPlist.html?ip=&adr=&checktime=&sleep=1&cunhuo=&nadr=&dengji=&https=1&yys=&post=%D6%A7%B3%D6&px=
+                                                                             */exports.default =
+async function (page, fetch, saver) {
+    ////////////////////////////
+    return;
+    ////////////////////////////
 
-
-
-
-
-
-
-var _puppeteer = require('puppeteer');var _puppeteer2 = _interopRequireDefault(_puppeteer);
-var _nodeFetch = require('node-fetch');var _nodeFetch2 = _interopRequireDefault(_nodeFetch);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /**
-                                                                                                                                                                                           * 站大爷
-                                                                                                                                                                                           * 支持 https
-                                                                                                                                                                                           * 支持 post响应时间 < 1s
-                                                                                                                                                                                           * 
-                                                                                                                                                                                           * http://ip.zdaye.com/FreeIPlist.html?ip=&adr=&checktime=&sleep=1&cunhuo=&nadr=&dengji=&https=1&yys=&post=%D6%A7%B3%D6&px=
-                                                                                                                                                                                           */exports.default = async function (saver) {////////////////////////////
-    return; ////////////////////////////
-    const browser = await _puppeteer2.default.launch({ headless: false,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'] });
-
-    const page = await browser.newPage();
     await page.goto('http://ip.zdaye.com/FreeIPlist.html?ip=&adr=&checktime=&sleep=1&cunhuo=&nadr=&dengji=&https=1&yys=&post=%D6%A7%B3%D6&px=');
 
     await page.waitForSelector('#ipc');
@@ -38,7 +29,7 @@ var _nodeFetch = require('node-fetch');var _nodeFetch2 = _interopRequireDefault(
     });
     const cookies = await page.cookies();
     for (let ipPortUrl of ipPortUrls) {
-        const portPicBuffer = await (0, _nodeFetch2.default)(ipPortUrl.portUrl, {
+        const portPicBuffer = await fetch(ipPortUrl.portUrl, {
             follow: 200,
             headers: {
                 Host: 'ip.zdaye.com',
@@ -55,7 +46,5 @@ var _nodeFetch = require('node-fetch');var _nodeFetch2 = _interopRequireDefault(
 
         saver(`${ipPortUrl.ip}:???`);
     }
-
-    await browser.close();
 };
 //# sourceMappingURL=zdaye.js.map

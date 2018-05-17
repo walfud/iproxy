@@ -2,18 +2,7 @@
  * 西刺代理
  * http://www.xicidaili.com/
  */
-
-import puppeteer from 'puppeteer'
-import fetch from 'node-fetch'
-
-export default async function (saver) {
-    const browser = await puppeteer.launch({
-        headless: false,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-    })
-
-    // Goto share
-    const page = await browser.newPage()
+export default async function (page, fetch, saver) {
     await page.goto('http://www.xicidaili.com/')
     await page.waitForSelector('#ip_list > tbody > tr.odd')
     const proxys = await page.$$eval('#ip_list > tbody > tr.odd', x => {
@@ -33,6 +22,4 @@ export default async function (saver) {
     for (let proxy of proxys) {
         saver(`${proxy.ip}:${proxy.port}`)
     }
-
-    await browser.close()
 }

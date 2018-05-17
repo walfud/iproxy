@@ -3,7 +3,9 @@ var _path = require('path');var _path2 = _interopRequireDefault(_path);
 var _koa = require('koa');var _koa2 = _interopRequireDefault(_koa);
 var _koaLogger = require('koa-logger');var _koaLogger2 = _interopRequireDefault(_koaLogger);
 var _koaBodyparser = require('koa-bodyparser');var _koaBodyparser2 = _interopRequireDefault(_koaBodyparser);
-var _koaRouter = require('koa-router');var _koaRouter2 = _interopRequireDefault(_koaRouter);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _koaRouter = require('koa-router');var _koaRouter2 = _interopRequireDefault(_koaRouter);
+var _puppeteer = require('puppeteer');var _puppeteer2 = _interopRequireDefault(_puppeteer);
+var _nodeFetch = require('node-fetch');var _nodeFetch2 = _interopRequireDefault(_nodeFetch);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 // Sniffer Service
 setInterval(function () {
@@ -25,11 +27,20 @@ setInterval(function () {
         console.log(`loading sniffer: ${file}`);
 
         const { name } = _path2.default.parse(file);
-        try {
-            require(`./sniffer/${name}`).default(saver);
-        } catch (err) {
-            console.log(err);
-        }
+        (async function () {
+            const browser = await _puppeteer2.default.launch({
+                headless: false,
+                args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+
+            try {
+                const page = await browser.newPage();
+                await require(`./sniffer/${name}`).default(page, _nodeFetch2.default, saver);
+            } catch (err) {
+                console.log(err);
+            } finally {
+                browser && browser.close();
+            }
+        })();
     }
 }, 10 * 60 * 1000);
 

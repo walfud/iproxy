@@ -5,20 +5,11 @@
  * 
  * http://ip.zdaye.com/FreeIPlist.html?ip=&adr=&checktime=&sleep=1&cunhuo=&nadr=&dengji=&https=1&yys=&post=%D6%A7%B3%D6&px=
  */
-
-import puppeteer from 'puppeteer'
-import fetch from 'node-fetch'
-
-export default async function (saver) {
+export default async function (page, fetch, saver) {
     ////////////////////////////
     return
     ////////////////////////////
 
-    const browser = await puppeteer.launch({
-        headless: false,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-    })
-    const page = await browser.newPage()
     await page.goto('http://ip.zdaye.com/FreeIPlist.html?ip=&adr=&checktime=&sleep=1&cunhuo=&nadr=&dengji=&https=1&yys=&post=%D6%A7%B3%D6&px=')
 
     await page.waitForSelector('#ipc')
@@ -55,6 +46,4 @@ export default async function (saver) {
 
         saver(`${ipPortUrl.ip}:???`)
     }
-
-    await browser.close()
 }

@@ -2,18 +2,7 @@
  * 无忧代理
  * http://www.data5u.com/free/index.shtml
  */
-
-import puppeteer from 'puppeteer'
-import fetch from 'node-fetch'
-
-export default async function (saver) {
-    const browser = await puppeteer.launch({
-        headless: false,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-    })
-
-    // Goto share
-    const page = await browser.newPage()
+export default async function (page, fetch, saver) {
     await page.goto('http://www.data5u.com/free/index.shtml')
     await page.waitForSelector('body > div:nth-child(7) > ul > li:nth-child(2) > ul:not(:nth-child(1))')
     const proxys = await page.$$eval('body > div:nth-child(7) > ul > li:nth-child(2) > ul:not(:nth-child(1))', x => {
@@ -33,6 +22,4 @@ export default async function (saver) {
     for (let proxy of proxys) {
         saver(`${proxy.ip}:${proxy.port}`)
     }
-
-    await browser.close()
 }

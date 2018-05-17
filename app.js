@@ -4,6 +4,8 @@ import Koa from 'koa'
 import logger from 'koa-logger'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
+import puppeteer from 'puppeteer'
+import fetch from 'node-fetch'
 
 // Sniffer Service
 setInterval(function () {
@@ -24,12 +26,21 @@ setInterval(function () {
     for (let file of fs.readdirSync('./sniffer')) {
         console.log(`loading sniffer: ${file}`)
 
-        const { name } = path.parse(file)
-        try {
-            require(`./sniffer/${name}`).default(saver)
-        } catch (err) {
-            console.log(err)
-        }
+        const { name } = path.parse(file);
+        (async function () {
+            const browser = await puppeteer.launch({
+                headless: false,
+                args: ['--no-sandbox', '--disable-setuid-sandbox']
+            })
+            try {
+                const page = await browser.newPage()
+                await require(`./sniffer/${name}`).default(page, fetch, saver)
+            } catch (err) {
+                console.log(err)
+            } finally {
+                browser && browser.close()
+            }
+        })()
     }
 }, 10 * 60 * 1000);
 
