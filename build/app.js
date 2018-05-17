@@ -11,7 +11,7 @@ var _nodeFetch = require('node-fetch');var _nodeFetch2 = _interopRequireDefault(
 setInterval(function () {
     // TODO: mongodb
     const proxies = [];
-    function saver(proxy) {
+    function saver(where, proxy) {
         if (!Array.isArray(proxy)) {
             proxy = [proxy];
         }
@@ -19,7 +19,7 @@ setInterval(function () {
         for (let i of proxy) {
             if (i && i.replace(/[^.]/g, '').length === 3 && i.replace(/[^:]/g, '').length === 1) {
                 proxies.push(i);
-                console.log(`proxy added: ${i}`);
+                console.log(`${where} add: ${i}`);
             }
         }
     }
@@ -34,7 +34,7 @@ setInterval(function () {
 
             try {
                 const page = await browser.newPage();
-                await require(`./sniffer/${name}`).default(page, _nodeFetch2.default, saver);
+                await require(`./sniffer/${name}`).default(page, _nodeFetch2.default, proxy => saver(name, proxy));
             } catch (err) {
                 console.log(err);
             } finally {
