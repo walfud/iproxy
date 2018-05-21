@@ -1,0 +1,23 @@
+version: "3"
+services:
+
+  node:
+    image: alekzonder/puppeteer
+    container_name: iproxy
+    env_file: .env
+    working_dir: /iproxy
+    command: npm start
+    volumes:
+      - .:/iproxy
+    ports:
+      - "56207:3000"
+    expose:
+      - "3000"
+    networks:
+      static:
+        ipv4_address: 192.168.100.140
+
+
+networks:
+  static:
+    external: true
