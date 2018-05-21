@@ -7,10 +7,10 @@ import Router from 'koa-router'
 import puppeteer from 'puppeteer'
 import fetch from 'node-fetch'
 
+const proxys = []
+
 // Sniffer Service
 setInterval(function () {
-    // TODO: mongodb
-    const proxies = []
     function saver(where, proxy) {
         if (!Array.isArray(proxy)) {
             proxy = [proxy]
@@ -18,18 +18,21 @@ setInterval(function () {
 
         for (let i of proxy) {
             if (i && i.replace(/[^.]/g, '').length === 3 && i.replace(/[^:]/g, '').length === 1) {
-                proxies.push(i)
+                proxys.push(i)
                 console.log(`${where} add: ${i}`)
             }
         }
     }
+
+    // Refresh
+    proxys.splice(0)
     for (let file of fs.readdirSync('./sniffer')) {
         console.log(`loading sniffer: ${file}`)
 
         const { name } = path.parse(file);
         (async function () {
             const browser = await puppeteer.launch({
-                headless: false,
+                headless: true,
                 args: ['--no-sandbox', '--disable-setuid-sandbox']
             })
             try {
@@ -42,7 +45,7 @@ setInterval(function () {
             }
         })()
     }
-}, 10 * 60 * 1000);
+}, 60 * 60 * 1000);
 
 // Server
 const app = new Koa()
@@ -51,16 +54,8 @@ app.use(bodyParser())
 
 const root = new Router()
 root.get('/', ctx => {
-    ctx.body = 'Hello World'
+    ctx.body = proxys
 })
-
-// Load all routers
-for (let file of fs.readdirSync('./router')) {
-    console.log(`loading module: ${file}`)
-
-    const { name } = path.parse(file)
-    root.use(`/${name}`, require(`./router/${name}`).default.routes())
-}
 app.use(root.routes())
 
 app.listen(3000)

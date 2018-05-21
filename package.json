@@ -6,7 +6,7 @@
   "scripts": {
     "debug": "babel-node app.js",
     "start": "node build/app.js",
-    "build": "babel *.js router/*.js sniffer/*.js --out-dir build --source-maps",
+    "build": "babel *.js sniffer/*.js --out-dir build --source-maps",
     "clean": "rm -rf build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
